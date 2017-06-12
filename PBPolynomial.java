@@ -349,7 +349,7 @@ public class PBPolynomial {
         double[][] ar = {{7., 15., 10., 7., 10.}, {10., 17., 4., 11., 22.}, {16., 7., 6., 18., 14.}, {11., 7., 6., 12., 8.}};
         Matrix costs = new Matrix(ar);
         solver.PMedianClustering(p, costs, "comms");
-        solver.formatClustersFile("/Users/marat/IdeaProjects/graph/karate/comms.dat");
+        solver.formatClustersFile("comms.dat");
 
     }
 }

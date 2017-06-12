@@ -347,25 +347,8 @@ public class PMPClustering {
     }
 
     public static void main(String[] args) {
-        String graphsFolder = "/Users/marat/IdeaProjects/graph/graphs/";
-        String benchName = "network_";
-        String communityName = "community_";
-        String [] nodeCount = {"20", "40", "40ov", "80", "100", "120", "120ov", "150", "200", "30", "30ov", "50", "50ov", "180", "250"};
-        String numb = "30";// 2,    6,        8,     11,   16,     8,    20,       17,    30,   8,     11,     9,    16,     47,    51
-        int clusterNumb = 7;
-        //for (int i = 0; i < nodeCount.length; i++) {
         PMPClustering clustering = new PMPClustering();
-        //clustering.doClustering(graphsFolder + benchName + numb + ".dat", graphsFolder + communityName + numb + ".dat", clusterNumb, true, true);
-        clustering.doClustering(graphsFolder + "karate.gml", graphsFolder + communityName + numb + ".dat", 2, false, true);
-        //clustering.doClustering(graphsFolder + "lesmis.gml", graphsFolder + communityName + numb + ".dat", 8, false, true);
-        //clustering.doClustering(graphsFolder + "dolphins.gml", graphsFolder + communityName + numb + ".dat", 2, false, true);
-        //clustering.doClustering(graphsFolder + "football.gml", graphsFolder + communityName + numb + ".dat", 12, false, true);
-        //clustering.doClustering(graphsFolder + "polbooks.gml", graphsFolder + communityName + numb + ".dat", 3, false, true);
-        //clustering.doClustering(graphsFolder + "adjnoun.gml", graphsFolder + communityName + numb + ".dat", 2, false, false);
-             clustering = null;
-        //}
+        clustering.doClustering("karate.gml", "communities.dat", 2, false, true);
     }
-
-
 } //class
 
