@@ -299,11 +299,58 @@ public class PMPClustering {
 
         Set <Node> coloredNodes = new HashSet();
 
+        for (Node node: graph.getNodes()) {
+            node.getNodeData().getAttributes().setValue("ClusterCount", 0);
+
+        }
         int clusterNumber = 0;
         for (Vector <Integer> cluster: edge_clusters.values()) {
             for (Integer edge_id: cluster) {
                 Edge edge = graph.getEdge(edge_id);
                 edge.getEdgeData().setColor(r[clusterNumber], g[clusterNumber], b[clusterNumber]);
+                //edge.getEdgeData().getAttributes().setValue("Cluster", clusterNumber);
+
+                int target_count = (int) edge.getTarget().getNodeData().getAttributes().getValue("ClusterCount");
+                int source_count = (int) edge.getSource().getNodeData().getAttributes().getValue("ClusterCount");
+
+                boolean write_target = true, write_source = true;
+
+                if (target_count != 0) {
+                    for (int j = 1; j <= target_count; j++) {
+                        int clust = (int) edge.getTarget().getNodeData().getAttributes().getValue("ClusterNumb" + j);
+                        if (clust == (c.indexOf(edge_clusters.keySet().toArray()[clusterNumber]) + 1)) {
+                            write_target = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (source_count != 0) {
+                    for (int j = 1; j <= source_count; j++) {
+                        int clust = (int) edge.getSource().getNodeData().getAttributes().getValue("ClusterNumb" + j);
+                        if (clust == (c.indexOf(edge_clusters.keySet().toArray()[clusterNumber]) + 1)) {
+                            write_source= false;
+                            break;
+                        }
+                    }
+                }
+
+
+                edge.getEdgeData().getAttributes().setValue("ClusterNumb", (c.indexOf(edge_clusters.keySet().toArray()[clusterNumber]) + 1));
+
+                if (write_source)
+                {
+                    source_count++;
+                    edge.getSource().getNodeData().getAttributes().setValue("ClusterNumb" + source_count, (c.indexOf(edge_clusters.keySet().toArray()[clusterNumber]) + 1));
+                    edge.getSource().getNodeData().getAttributes().setValue("ClusterCount", source_count);
+                }
+                if (write_target)
+                {
+                    target_count++;
+                    edge.getTarget().getNodeData().getAttributes().setValue("ClusterNumb" + target_count, (c.indexOf(edge_clusters.keySet().toArray()[clusterNumber]) + 1));
+                    edge.getTarget().getNodeData().getAttributes().setValue("ClusterCount", target_count);
+                }
+
                 if (coloredNodes.contains(edge.getSource())) {
                     float rr = edge.getSource().getNodeData().r();
                     float gg = edge.getSource().getNodeData().g();
@@ -325,7 +372,6 @@ public class PMPClustering {
                 } else {
                     coloredNodes.add(edge.getTarget());
                     edge.getTarget().getNodeData().setColor(r[clusterNumber], g[clusterNumber], b[clusterNumber]);
-
                 }
 
             }
@@ -334,6 +380,7 @@ public class PMPClustering {
 
         for (Node node: graph.getNodes()) {
             node.getNodeData().setLabel(node.getNodeData().getLabel());
+
         }
 
         ExportController ec = Lookup.getDefault().lookup(ExportController.class);
